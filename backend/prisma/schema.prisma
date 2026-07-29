@@ -1,0 +1,66 @@
+// Prisma schema for the AI Lead-to-Deal System.
+// Mirrors backend-fastapi-archive/models.py (Lead, Email, LeadActivity) field-for-field.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Lead {
+  id              Int       @id @default(autoincrement())
+  name            String
+  email           String
+  company         String
+  title           String
+  industry        String
+  source          String    @default("manual")
+  stage           String    @default("new")
+  score           Int?
+  scoreReasoning  String?   @map("score_reasoning")
+  dealValue       Float?    @map("deal_value")
+  currency        String    @default("USD")
+  nextAction      String?   @map("next_action")
+  aiSummary       String?   @map("ai_summary")
+  icpFit          String?   @map("icp_fit")
+  enrichedAt      DateTime? @map("enriched_at")
+  notes           String?
+  lostReason      String?   @map("lost_reason")
+  stageEnteredAt  DateTime? @map("stage_entered_at")
+  createdAt       DateTime  @default(now()) @map("created_at")
+  updatedAt       DateTime  @default(now()) @map("updated_at")
+
+  emails     Email[]
+  activities LeadActivity[]
+
+  @@map("leads")
+}
+
+model Email {
+  id          Int       @id @default(autoincrement())
+  leadId      Int       @map("lead_id")
+  emailType   String    @map("email_type")
+  subject     String
+  body        String
+  generatedAt DateTime  @default(now()) @map("generated_at")
+  openedAt    DateTime? @map("opened_at")
+
+  lead Lead @relation(fields: [leadId], references: [id], onDelete: Cascade)
+
+  @@map("emails")
+}
+
+model LeadActivity {
+  id          Int      @id @default(autoincrement())
+  leadId      Int      @map("lead_id")
+  eventType   String   @map("event_type")
+  description String
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  lead Lead @relation(fields: [leadId], references: [id], onDelete: Cascade)
+
+  @@map("lead_activities")
+}
