@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Lead-to-Deal System — Product Page</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --orange: #FF6B00;
+      --orange-light: #FF8C38;
+      --black: #0D0D0D;
+      --dark: #1A1A1A;
+      --dark2: #252525;
+      --grey: #6B6B6B;
+      --light-grey: #F5F5F5;
+      --white: #FFFFFF;
+      --green: #22C55E;
+      --red: #EF4444;
+      --blue: #3B82F6;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--white); color: var(--dark); line-height: 1.6;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(13,13,13,0.96); backdrop-filter: blur(10px);
+      padding: 0 5%; display: flex; align-items: center;
+      justify-content: space-between; height: 64px;
+      border-bottom: 1px solid #2a2a2a;
+    }
+    .nav-logo { font-size: 1.1rem; font-weight: 800; color: var(--white); }
+    .nav-logo span { color: var(--orange); }
+    .nav-links { display: flex; gap: 32px; list-style: none; }
+    .nav-links a { color: #aaa; text-decoration: none; font-size: 0.875rem; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--white); }
+    .nav-cta {
+      background: var(--orange); color: var(--white);
+      padding: 8px 20px; border-radius: 6px; font-size: 0.875rem;
+      font-weight: 600; text-decoration: none; transition: background 0.2s;
+    }
+    .nav-cta:hover { background: var(--orange-light); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh; background: var(--black);
+      display: flex; align-items: center;
+      padding: 120px 5% 80px; position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: ''; position: absolute; top: -150px; right: -50px;
+      width: 700px; height: 700px;
+      background: radial-gradient(circle, rgba(255,107,0,0.1) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    .hero-inner {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 60px; align-items: center; width: 100%; max-width: 1200px; margin: 0 auto;
+      position: relative; z-index: 1;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(255,107,0,0.12); border: 1px solid rgba(255,107,0,0.3);
+      color: var(--orange); padding: 6px 14px; border-radius: 100px;
+      font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; margin-bottom: 24px;
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 4.5vw, 3.5rem); font-weight: 800;
+      line-height: 1.1; color: var(--white); margin-bottom: 20px;
+    }
+    .hero h1 span { color: var(--orange); }
+    .hero p { font-size: 1.1rem; color: #aaa; margin-bottom: 32px; line-height: 1.7; }
+    .hero-btns { display: flex; gap: 14px; flex-wrap: wrap; }
+    .btn-primary {
+      background: var(--orange); color: var(--white); padding: 14px 28px;
+      border-radius: 8px; font-size: 1rem; font-weight: 700;
+      text-decoration: none; transition: all 0.2s;
+      display: inline-flex; align-items: center; gap: 8px;
+    }
+    .btn-primary:hover { background: var(--orange-light); transform: translateY(-1px); }
+    .btn-ghost {
+      background: transparent; color: var(--white); padding: 14px 28px;
+      border-radius: 8px; font-size: 1rem; font-weight: 600;
+      text-decoration: none; border: 1px solid #444; transition: all 0.2s;
+    }
+    .btn-ghost:hover { border-color: var(--orange); color: var(--orange); }
+
+    /* Pipeline preview card */
+    .hero-card {
+      background: var(--dark2); border-radius: 16px;
+      border: 1px solid #2a2a2a; overflow: hidden;
+    }
+    .hero-card-header {
+      background: var(--dark); padding: 14px 20px;
+      display: flex; align-items: center; gap: 8px;
+      border-bottom: 1px solid #2a2a2a;
+    }
+    .dot { width: 10px; height: 10px; border-radius: 50%; }
+    .dot.red { background: #ef4444; }
+    .dot.yellow { background: #eab308; }
+    .dot.green { background: #22c55e; }
+    .hero-card-title { color: #666; font-size: 0.78rem; margin-left: 6px; }
+    .hero-card-body { padding: 20px; display: flex; flex-direction: column; gap: 10px; }
+    .lead-row {
+      display: flex; align-items: center; gap: 12px;
+      background: var(--dark); border-radius: 8px; padding: 12px 14px;
+      border: 1px solid #2f2f2f;
+    }
+    .lead-avatar {
+      width: 34px; height: 34px; border-radius: 50%;
+      background: rgba(255,107,0,0.2); display: flex;
+      align-items: center; justify-content: center;
+      font-size: 0.75rem; font-weight: 700; color: var(--orange); flex-shrink: 0;
+    }
+    .lead-info { flex: 1; min-width: 0; }
+    .lead-name { font-size: 0.85rem; font-weight: 600; color: var(--white); }
+    .lead-company { font-size: 0.75rem; color: #666; }
+    .score-badge {
+      font-size: 0.75rem; font-weight: 700; padding: 3px 10px;
+      border-radius: 100px; flex-shrink: 0;
+    }
+    .score-high { background: rgba(34,197,94,0.15); color: #22c55e; }
+    .score-med  { background: rgba(234,179,8,0.15);  color: #eab308; }
+    .stage-pill {
+      font-size: 0.7rem; font-weight: 600; padding: 3px 9px;
+      border-radius: 100px; background: rgba(255,107,0,0.1);
+      color: var(--orange); flex-shrink: 0;
+    }
+    .ai-tag {
+      font-size: 0.68rem; background: rgba(59,130,246,0.15);
+      color: var(--blue); padding: 2px 8px; border-radius: 100px;
+      font-weight: 600; flex-shrink: 0;
+    }
+
+    /* ── STATS STRIP ── */
+    .stats-strip {
+      background: var(--dark); padding: 24px 5%;
+      display: flex; justify-content: center;
+      gap: 60px; border-bottom: 1px solid #2a2a2a; flex-wrap: wrap;
+    }
+    .stat { text-align: center; }
+    .stat-num { font-size: 1.8rem; font-weight: 900; color: var(--orange); line-height: 1; }
+    .stat-label { font-size: 0.78rem; color: #555; margin-top: 4px; }
+
+    /* ── SHARED ── */
+    section { padding: 96px 5%; }
+    .section-label {
+      font-size: 0.75rem; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--orange); margin-bottom: 12px;
+    }
+    .section-title {
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem); font-weight: 800;
+      line-height: 1.2; color: var(--dark); margin-bottom: 16px;
+    }
+    .section-sub {
+      font-size: 1.05rem; color: var(--grey);
+      max-width: 560px; line-height: 1.7; margin-bottom: 56px;
+    }
+    .center { text-align: center; }
+    .center .section-sub { margin-left: auto; margin-right: auto; }
+
+    /* ── PROBLEM ── */
+    .problem { background: var(--light-grey); }
+    .problem-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; }
+    .problem-list { list-style: none; display: flex; flex-direction: column; gap: 14px; }
+    .problem-list li {
+      display: flex; gap: 14px; align-items: flex-start;
+      background: var(--white); padding: 18px 20px;
+      border-radius: 10px; border-left: 3px solid var(--red);
+    }
+    .problem-list li .icon { font-size: 1.3rem; flex-shrink: 0; margin-top: 2px; }
+    .problem-list li h4 { font-size: 0.92rem; font-weight: 700; color: var(--dark); }
+    .problem-list li p { font-size: 0.85rem; color: var(--grey); margin-top: 3px; }
+    .stat-highlight {
+      background: var(--dark); border-radius: 14px; padding: 32px;
+      display: flex; flex-direction: column; gap: 20px;
+    }
+    .stat-highlight h3 { color: #555; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.1em; }
+    .big-stat { text-align: center; padding: 24px 0; border-bottom: 1px solid #2a2a2a; }
+    .big-stat:last-child { border-bottom: none; }
+    .big-num { font-size: 3rem; font-weight: 900; color: var(--orange); line-height: 1; }
+    .big-desc { font-size: 0.85rem; color: #777; margin-top: 6px; }
+
+    /* ── AI POWERS ── */
+    .powers { background: var(--white); }
+    .powers-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+    .power-card {
+      background: var(--light-grey); border-radius: 14px;
+      padding: 28px 22px; border: 1px solid #eee; transition: all 0.25s;
+    }
+    .power-card:hover {
+      border-color: var(--orange); transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(255,107,0,0.1);
+    }
+    .power-icon {
+      width: 48px; height: 48px; border-radius: 10px;
+      background: rgba(255,107,0,0.1); display: flex; align-items: center;
+      justify-content: center; font-size: 1.4rem; margin-bottom: 14px;
+    }
+    .power-card h3 { font-size: 1rem; font-weight: 700; color: var(--dark); margin-bottom: 8px; }
+    .power-card p { font-size: 0.875rem; color: var(--grey); line-height: 1.6; }
+
+    /* ── STEPS ── */
+    .steps { background: var(--black); }
+    .steps .section-title { color: var(--white); }
+    .steps .section-sub { color: #666; }
+    .steps-list { display: flex; flex-direction: column; gap: 0; max-width: 860px; margin: 0 auto; }
+    .step-item {
+      display: flex; gap: 28px; align-items: flex-start;
+      padding: 28px 0; border-bottom: 1px solid #1f1f1f;
+      position: relative;
+    }
+    .step-item:last-child { border-bottom: none; }
+    .step-left { flex-shrink: 0; display: flex; flex-direction: column; align-items: center; gap: 0; }
+    .step-circle {
+      width: 48px; height: 48px; border-radius: 50%;
+      background: rgba(255,107,0,0.15); border: 2px solid rgba(255,107,0,0.4);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem; font-weight: 900; color: var(--orange);
+    }
+    .step-body { flex: 1; padding-top: 4px; }
+    .step-body h3 { font-size: 1.05rem; font-weight: 700; color: var(--white); margin-bottom: 8px; }
+    .step-body p { font-size: 0.9rem; color: #777; line-height: 1.6; }
+    .step-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 12px; }
+    .tag {
+      font-size: 0.72rem; font-weight: 600; padding: 3px 10px;
+      border-radius: 100px; background: rgba(255,107,0,0.1);
+      color: var(--orange); border: 1px solid rgba(255,107,0,0.2);
+    }
+    .tag.blue {
+      background: rgba(59,130,246,0.1); color: var(--blue);
+      border-color: rgba(59,130,246,0.2);
+    }
+
+    /* ── PIPELINE STAGES ── */
+    .pipeline { background: var(--light-grey); }
+    .stages-flow {
+      display: flex; gap: 0; overflow-x: auto;
+      padding-bottom: 8px;
+    }
+    .stage-block {
+      flex: 1; min-width: 140px;
+      background: var(--white); border: 1px solid #e5e5e5;
+      border-radius: 0; padding: 24px 16px; text-align: center;
+      position: relative; transition: all 0.2s;
+    }
+    .stage-block:first-child { border-radius: 12px 0 0 12px; }
+    .stage-block:last-child { border-radius: 0 12px 12px 0; border-right: 1px solid #e5e5e5; }
+    .stage-block:not(:last-child)::after {
+      content: '›'; position: absolute; right: -14px; top: 50%;
+      transform: translateY(-50%); font-size: 1.5rem; color: var(--orange);
+      z-index: 1; font-weight: 900;
+    }
+    .stage-block:hover { background: var(--dark); border-color: var(--dark); }
+    .stage-block:hover .stage-name { color: var(--white); }
+    .stage-block:hover .stage-prob { color: var(--orange); }
+    .stage-block:hover .stage-desc { color: #888; }
+    .stage-icon { font-size: 1.5rem; margin-bottom: 10px; }
+    .stage-name { font-size: 0.85rem; font-weight: 700; color: var(--dark); margin-bottom: 6px; }
+    .stage-prob { font-size: 1.3rem; font-weight: 900; color: var(--orange); margin-bottom: 4px; }
+    .stage-desc { font-size: 0.72rem; color: #999; }
+    .stage-won { background: rgba(34,197,94,0.08); border-color: rgba(34,197,94,0.3); }
+    .stage-won .stage-prob { color: var(--green); }
+    .stage-lost { background: rgba(239,68,68,0.05); border-color: rgba(239,68,68,0.2); }
+    .stage-lost .stage-prob { color: var(--red); }
+
+    /* ── FEATURES ── */
+    .features { background: var(--white); }
+    .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .feat-card {
+      background: var(--light-grey); border-radius: 12px; padding: 24px;
+      border: 1px solid #eee; transition: all 0.2s;
+    }
+    .feat-card:hover { box-shadow: 0 8px 24px rgba(0,0,0,0.07); transform: translateY(-2px); border-color: #ddd; }
+    .feat-card .icon { font-size: 1.6rem; margin-bottom: 12px; }
+    .feat-card h3 { font-size: 0.95rem; font-weight: 700; color: var(--dark); margin-bottom: 6px; }
+    .feat-card p { font-size: 0.85rem; color: var(--grey); line-height: 1.6; }
+
+    /* ── IMPACT ── */
+    .impact { background: var(--light-grey); }
+    .impact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+    .impact-col { border-radius: 14px; padding: 32px; }
+    .impact-col.bad { background: #fff5f5; border: 1px solid #fee2e2; }
+    .impact-col.good { background: var(--dark); border: 1px solid #2a2a2a; }
+    .impact-col h3 { font-size: 1.05rem; font-weight: 800; margin-bottom: 22px; display: flex; align-items: center; gap: 10px; }
+    .impact-col.bad h3 { color: var(--red); }
+    .impact-col.good h3 { color: var(--white); }
+    .impact-list { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+    .impact-list li { display: flex; gap: 12px; align-items: flex-start; font-size: 0.88rem; line-height: 1.5; }
+    .impact-col.bad .impact-list li { color: #7f1d1d; }
+    .impact-col.good .impact-list li { color: #aaa; }
+    .mark { font-size: 1rem; flex-shrink: 0; }
+
+    /* ── SCORING VISUAL ── */
+    .scoring { background: var(--black); padding: 80px 5%; }
+    .scoring-inner { max-width: 860px; margin: 0 auto; }
+    .scoring-title { color: var(--white); font-size: clamp(1.6rem, 3vw, 2.4rem); font-weight: 800; text-align: center; margin-bottom: 8px; }
+    .scoring-sub { color: #555; text-align: center; margin-bottom: 44px; }
+    .score-bars { display: flex; flex-direction: column; gap: 16px; }
+    .score-bar-row { display: flex; align-items: center; gap: 16px; }
+    .score-bar-label { width: 160px; font-size: 0.85rem; color: #aaa; text-align: right; flex-shrink: 0; }
+    .score-bar-track { flex: 1; height: 8px; background: #2a2a2a; border-radius: 100px; overflow: hidden; }
+    .score-bar-fill { height: 100%; border-radius: 100px; background: var(--orange); }
+    .score-bar-pct { width: 40px; font-size: 0.8rem; font-weight: 700; color: var(--orange); }
+
+    /* ── TECH ── */
+    .tech { background: var(--light-grey); }
+    .tech-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+    .tech-card {
+      background: var(--white); border-radius: 10px; padding: 20px 22px;
+      border: 1px solid #eee; display: flex; align-items: center; gap: 14px;
+    }
+    .tech-card .t-icon { font-size: 1.6rem; flex-shrink: 0; }
+    .tech-card h4 { font-size: 0.9rem; font-weight: 700; color: var(--dark); }
+    .tech-card p { font-size: 0.78rem; color: var(--grey); margin-top: 2px; }
+
+    /* ── CTA ── */
+    .cta-section { background: var(--orange); padding: 96px 5%; text-align: center; }
+    .cta-section h2 { font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 800; color: var(--white); margin-bottom: 14px; }
+    .cta-section p { color: rgba(255,255,255,0.85); font-size: 1.1rem; margin-bottom: 34px; }
+    .btn-white {
+      background: var(--white); color: var(--orange); padding: 16px 36px;
+      border-radius: 8px; font-size: 1rem; font-weight: 800;
+      text-decoration: none; transition: all 0.2s; display: inline-block;
+    }
+    .btn-white:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(0,0,0,0.2); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--black); padding: 40px 5%;
+      display: flex; justify-content: space-between; align-items: center;
+      border-top: 1px solid #1f1f1f; flex-wrap: wrap; gap: 14px;
+    }
+    footer p { color: #555; font-size: 0.85rem; }
+    footer span { color: var(--orange); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 960px) {
+      .hero-inner, .problem-grid, .impact-grid { grid-template-columns: 1fr; }
+      .powers-grid { grid-template-columns: repeat(2, 1fr); }
+      .features-grid { grid-template-columns: repeat(2, 1fr); }
+      .tech-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 600px) {
+      .powers-grid, .features-grid, .tech-grid { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+      .stages-flow { flex-direction: column; }
+      .stage-block { border-radius: 10px; }
+      .stage-block:not(:last-child)::after { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════ NAV ══════════ -->
+<nav>
+  <div class="nav-logo">Code<span>Thread</span></div>
+  <ul class="nav-links">
+    <li><a href="#problem">The Problem</a></li>
+    <li><a href="#how">How It Works</a></li>
+    <li><a href="#features">Features</a></li>
+    <li><a href="#pipeline">Pipeline</a></li>
+  </ul>
+  <a href="#cta" class="nav-cta">Book a Demo</a>
+</nav>
+
+<!-- ══════════ HERO ══════════ -->
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="hero-badge">AI Agent · Sales Pipeline</div>
+      <h1>Close More Deals.<br><span>Skip the</span><br><span>Manual Work.</span></h1>
+      <p>
+        An AI-powered sales co-pilot that enriches your leads, scores them instantly,
+        writes personalised emails, and tells you exactly what to do next — at every stage.
+      </p>
+      <div class="hero-btns">
+        <a href="#cta" class="btn-primary">📅 Book a Demo</a>
+        <a href="#how" class="btn-ghost">See How It Works →</a>
+      </div>
+    </div>
+    <div class="hero-card">
+      <div class="hero-card-header">
+        <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
+        <span class="hero-card-title">Live Pipeline · 4 Active Leads</span>
+      </div>
+      <div class="hero-card-body">
+        <div class="lead-row">
+          <div class="lead-avatar">SC</div>
+          <div class="lead-info">
+            <div class="lead-name">Sarah Chen</div>
+            <div class="lead-company">TechFlow Solutions · VP of Sales</div>
+          </div>
+          <span class="score-badge score-high">87</span>
+          <span class="stage-pill">Negotiation</span>
+          <span class="ai-tag">AI ✓</span>
+        </div>
+        <div class="lead-row">
+          <div class="lead-avatar">MW</div>
+          <div class="lead-info">
+            <div class="lead-name">Marcus Williams</div>
+            <div class="lead-company">FinEdge Capital · CTO</div>
+          </div>
+          <span class="score-badge score-high">92</span>
+          <span class="stage-pill">Proposal</span>
+          <span class="ai-tag">AI ✓</span>
+        </div>
+        <div class="lead-row">
+          <div class="lead-avatar">ER</div>
+          <div class="lead-info">
+            <div class="lead-name">Emma Rodriguez</div>
+            <div class="lead-company">VendorWise · VP of Product</div>
+          </div>
+          <span class="score-badge score-med">71</span>
+          <span class="stage-pill">Proposal</span>
+          <span class="ai-tag">AI ✓</span>
+        </div>
+        <div class="lead-row">
+          <div class="lead-avatar">JO</div>
+          <div class="lead-info">
+            <div class="lead-name">James O'Brien</div>
+            <div class="lead-company">HealthSpan Analytics · CEO</div>
+          </div>
+          <span class="score-badge score-high">78</span>
+          <span class="stage-pill">Qualified</span>
+          <span class="ai-tag">AI ✓</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ STATS ══════════ -->
+<div class="stats-strip">
+  <div class="stat"><div class="stat-num">2–3h</div><div class="stat-label">Manual research replaced per lead</div></div>
+  <div class="stat"><div class="stat-num">0–100</div><div class="stat-label">AI lead scoring with reasoning</div></div>
+  <div class="stat"><div class="stat-num">4</div><div class="stat-label">AI email types generated</div></div>
+  <div class="stat"><div class="stat-num">6</div><div class="stat-label">Pipeline stages tracked</div></div>
+  <div class="stat"><div class="stat-num">Claude</div><div class="stat-label">AI — Powered by Anthropic</div></div>
+</div>
+
+<!-- ══════════ PROBLEM ══════════ -->
+<section class="problem" id="problem">
+  <div class="section-label">The Problem</div>
+  <h2 class="section-title">B2B sales is broken<br>by manual work.</h2>
+  <p class="section-sub">
+    Your reps are spending most of their day on research, writing, and admin —
+    not on talking to people and closing deals.
+  </p>
+  <div class="problem-grid">
+    <ul class="problem-list">
+      <li>
+        <div class="icon">🔍</div>
+        <div>
+          <h4>Hours lost to manual research</h4>
+          <p>Reps spend 2–3 hours per lead researching LinkedIn, company websites, and news — before even reaching out.</p>
+        </div>
+      </li>
+      <li>
+        <div class="icon">📧</div>
+        <div>
+          <h4>Generic emails get ignored</h4>
+          <p>Copy-pasted templates with minimal personalisation. The prospect can tell instantly — and they don't reply.</p>
+        </div>
+      </li>
+      <li>
+        <div class="icon">📊</div>
+        <div>
+          <h4>No lead prioritisation</h4>
+          <p>A $5,000 lead gets the same attention as a $50,000 one. There is no scoring, no ranking, just a list of names.</p>
+        </div>
+      </li>
+      <li>
+        <div class="icon">😶</div>
+        <div>
+          <h4>Deals go cold silently</h4>
+          <p>Reps forget to follow up. Leads go cold. Nobody notices until the quarter is over and targets are missed.</p>
+        </div>
+      </li>
+      <li>
+        <div class="icon">📉</div>
+        <div>
+          <h4>Pipeline forecasts are guesses</h4>
+          <p>"How confident are you?" — the honest answer is "not very." Forecasting from a spreadsheet is not forecasting.</p>
+        </div>
+      </li>
+    </ul>
+
+    <div class="stat-highlight">
+      <h3>The Reality for Most Sales Teams</h3>
+      <div class="big-stat">
+        <div class="big-num">34%</div>
+        <div class="big-desc">of a sales rep's time is actually spent selling.<br>The rest is admin, research, and writing.</div>
+      </div>
+      <div class="big-stat">
+        <div class="big-num">14 days</div>
+        <div class="big-desc">average time a deal sits stuck in one stage<br>before someone notices it needs attention.</div>
+      </div>
+      <div class="big-stat">
+        <div class="big-num">60%</div>
+        <div class="big-desc">of prospects feel the outreach they receive<br>is not relevant to their role or company.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ AI POWERS ══════════ -->
+<section class="powers" id="solution">
+  <div class="center">
+    <div class="section-label">The Solution</div>
+    <h2 class="section-title">Your AI sales co-pilot.<br>On every deal, every day.</h2>
+    <p class="section-sub">Five AI capabilities that replace hours of manual work — available on demand, for every lead in your pipeline.</p>
+  </div>
+  <div class="powers-grid">
+    <div class="power-card">
+      <div class="power-icon">🔬</div>
+      <h3>AI Lead Enrichment</h3>
+      <p>Generates an instant intelligence summary of any lead — company context, contact seniority, and ICP fit — in seconds.</p>
+    </div>
+    <div class="power-card">
+      <div class="power-icon">🎯</div>
+      <h3>AI Lead Scoring</h3>
+      <p>Scores every lead 0–100 based on title seniority, industry fit, deal size, and pipeline stage. Know who to focus on immediately.</p>
+    </div>
+    <div class="power-card">
+      <div class="power-icon">⚡</div>
+      <h3>AI Next-Action</h3>
+      <p>Tells you exactly what to do next for each lead — one specific, actionable step. No guessing, no forgetting to follow up.</p>
+    </div>
+    <div class="power-card">
+      <div class="power-icon">✉️</div>
+      <h3>AI Email Generation</h3>
+      <p>Writes complete, personalised sales emails — cold outreach, follow-ups, and formal proposals — in seconds, not hours.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ HOW IT WORKS ══════════ -->
+<section class="steps" id="how">
+  <div class="center">
+    <div class="section-label">How It Works</div>
+    <h2 class="section-title" style="color:var(--white)">From first lead to closed deal —<br>8 intelligent steps.</h2>
+    <p class="section-sub">AI assists at every step of the journey — so reps spend their time on conversations, not admin.</p>
+  </div>
+  <div class="steps-list">
+    <div class="step-item">
+      <div class="step-left"><div class="step-circle">1</div></div>
+      <div class="step-body">
+        <h3>Add the Lead</h3>
+        <p>Enter the lead's name, company, title, industry, and source. That's it — the system handles the rest.</p>
+        <div class="step-tags"><span class="tag">LinkedIn</span><span class="tag">Referral</span><span class="tag">Website</span><span class="tag">Conference</span></div>
+      </div>
+    </div>
+    <div class="step-item">
+      <div class="step-left"><div class="step-circle">2</div></div>
+      <div class="step-body">
+        <h3>AI Enriches the Lead in Seconds</h3>
+        <p>The AI generates a 2–3 sentence intelligence brief and assigns an ICP fit rating — High, Medium, or Low. Replaces 2–3 hours of manual research.</p>
+        <div class="step-tags"><span class="tag blue">AI Enrichment</span><span class="tag">ICP: High / Medium / Low</span></div>
+      </div>
+    </div>
+    <div class="step-item">
+      <div class="step-left"><div class="step-circle">3</div></div>
+      <div class="step-body">
+        <h3>AI Scores the Lead (0–100)</h3>
+        <p>Score is calculated from title seniority (40%), industry fit (30%), deal value (20%), and stage (10%). Returns a score plus a 2-sentence written explanation.</p>
+        <div class="step-tags"><span class="tag blue">AI Scoring</span><span class="tag">75+ = High Priority</span><span class="tag">50–74 = Medium</span></div>
+      </div>
+    </div>
+    <div class="step-item">
+      <div class="step-left"><div class="step-circle">4</div></div>
+      <div class="step-body">
+        <h3>AI Recommends the Next Action</h3>
+        <p>One specific, actionable step based on stage, score, and industry. Never wonder "what should I do with this lead?" again.</p>
+        <div class="step-tags"><span class="tag blue">AI Next-Action</span><span class="tag">Max 12 words, instantly actionable</span></div>
+      </div>
+    </div>
+    <div class="step-item">
+      <div class="step-left"><div class="step-circle">5</div></div>
+      <div class="step-body">
+        <h3>AI Writes the Email</h3>
+        <p>Select an email type and click Generate. The AI writes a complete, personalised email using the lead's name, company, role, and AI summary.</p>
+        <div class="step-tags"><span class="tag">Cold Outreach</span><span class="tag">Follow-Up 1</span><span class="tag">Follow-Up 2</span><span class="tag">Proposal</span></div>
+      </div>
+    </div>
+    <div class="step-item">
+      <div class="step-left"><div class="step-circle">6</div></div>
+      <div class="step-body">
+        <h3>Pipeline Stage Progression</h3>
+        <p>Move the lead through 6 stages. Every stage change is timestamped and logged. Deals stuck for 14+ days are automatically flagged.</p>
+        <div class="step-tags"><span class="tag">New → Qualified → Proposal → Negotiation → Won</span></div>
+      </div>
+    </div>
+    <div class="step-item">
+      <div class="step-left"><div class="step-circle">7</div></div>
+      <div class="step-body">
+        <h3>Revenue Forecast</h3>
+        <p>Probability-weighted pipeline value per stage. Expected quarterly close value. Lost deal reason analysis. Real numbers, not gut feel.</p>
+        <div class="step-tags"><span class="tag blue">Forecast</span><span class="tag">Qualified=20% · Proposal=40% · Negotiation=70%</span></div>
+      </div>
+    </div>
+    <div class="step-item">
+      <div class="step-left"><div class="step-circle">8</div></div>
+      <div class="step-body">
+        <h3>AI Pipeline Report</h3>
+        <p>On demand, the AI writes a full intelligence report: executive summary, pipeline health analysis, top opportunities, and prioritised next actions.</p>
+        <div class="step-tags"><span class="tag blue">AI Report</span><span class="tag">Markdown · Printable · Data-backed</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ PIPELINE STAGES ══════════ -->
+<section class="pipeline" id="pipeline">
+  <div class="center">
+    <div class="section-label">Pipeline Stages</div>
+    <h2 class="section-title">Every stage tracked.<br>Every deal visible.</h2>
+    <p class="section-sub">6 stages with real-time close probabilities. Stuck deals flagged automatically after 14 days.</p>
+  </div>
+  <div class="stages-flow">
+    <div class="stage-block">
+      <div class="stage-icon">🆕</div>
+      <div class="stage-name">New</div>
+      <div class="stage-prob">5%</div>
+      <div class="stage-desc">Lead entered<br>Enrich & score</div>
+    </div>
+    <div class="stage-block">
+      <div class="stage-icon">✅</div>
+      <div class="stage-name">Qualified</div>
+      <div class="stage-prob">20%</div>
+      <div class="stage-desc">Discovery done<br>Worth pursuing</div>
+    </div>
+    <div class="stage-block">
+      <div class="stage-icon">📄</div>
+      <div class="stage-name">Proposal</div>
+      <div class="stage-prob">40%</div>
+      <div class="stage-desc">Formal offer sent<br>Awaiting response</div>
+    </div>
+    <div class="stage-block">
+      <div class="stage-icon">🤝</div>
+      <div class="stage-name">Negotiation</div>
+      <div class="stage-prob">70%</div>
+      <div class="stage-desc">Terms being<br>finalised</div>
+    </div>
+    <div class="stage-block stage-won">
+      <div class="stage-icon">🏆</div>
+      <div class="stage-name">Won</div>
+      <div class="stage-prob">100%</div>
+      <div class="stage-desc">Closed.<br>Onboarding begins</div>
+    </div>
+    <div class="stage-block stage-lost">
+      <div class="stage-icon">❌</div>
+      <div class="stage-name">Lost</div>
+      <div class="stage-prob">0%</div>
+      <div class="stage-desc">Reason logged.<br>Nurture sequence</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ SCORING VISUAL ══════════ -->
+<div class="scoring">
+  <div class="scoring-inner">
+    <div class="section-label" style="text-align:center">AI Scoring Criteria</div>
+    <div class="scoring-title">How the AI scores your leads.</div>
+    <div class="scoring-sub">Every lead scored 0–100 across four weighted dimensions — with written reasoning.</div>
+    <div class="score-bars">
+      <div class="score-bar-row">
+        <div class="score-bar-label">Title Seniority</div>
+        <div class="score-bar-track"><div class="score-bar-fill" style="width:40%"></div></div>
+        <div class="score-bar-pct">40%</div>
+      </div>
+      <div class="score-bar-row">
+        <div class="score-bar-label">Industry Fit</div>
+        <div class="score-bar-track"><div class="score-bar-fill" style="width:30%"></div></div>
+        <div class="score-bar-pct">30%</div>
+      </div>
+      <div class="score-bar-row">
+        <div class="score-bar-label">Deal Size</div>
+        <div class="score-bar-track"><div class="score-bar-fill" style="width:20%"></div></div>
+        <div class="score-bar-pct">20%</div>
+      </div>
+      <div class="score-bar-row">
+        <div class="score-bar-label">Stage Progression</div>
+        <div class="score-bar-track"><div class="score-bar-fill" style="width:10%"></div></div>
+        <div class="score-bar-pct">10%</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ FEATURES ══════════ -->
+<section class="features" id="features">
+  <div class="center">
+    <div class="section-label">All Features</div>
+    <h2 class="section-title">Everything a modern<br>sales team needs.</h2>
+    <p class="section-sub">From lead entry to closed deal — every feature built to reduce manual work and increase revenue.</p>
+  </div>
+  <div class="features-grid">
+    <div class="feat-card">
+      <div class="icon">🔬</div>
+      <h3>AI Lead Enrichment</h3>
+      <p>Instant company and contact intelligence brief. ICP fit rating — High, Medium, or Low. Replaces hours of manual research.</p>
+    </div>
+    <div class="feat-card">
+      <div class="icon">🎯</div>
+      <h3>AI Lead Scoring (0–100)</h3>
+      <p>Four-factor score with written reasoning. Immediately shows which leads deserve attention and which should wait.</p>
+    </div>
+    <div class="feat-card">
+      <div class="icon">⚡</div>
+      <h3>AI Next-Action</h3>
+      <p>One precise recommended action per lead. Stage-aware and score-aware. Always know exactly what to do next.</p>
+    </div>
+    <div class="feat-card">
+      <div class="icon">✉️</div>
+      <h3>AI Email Generation</h3>
+      <p>Cold outreach, two follow-ups, and formal proposals — all personalised to the lead's role, company, and context.</p>
+    </div>
+    <div class="feat-card">
+      <div class="icon">📋</div>
+      <h3>Activity Timeline</h3>
+      <p>Full history per lead: created, enriched, scored, email sent, stage changed, note added. Nothing gets lost.</p>
+    </div>
+    <div class="feat-card">
+      <div class="icon">🚨</div>
+      <h3>Stuck Deal Detection</h3>
+      <p>Any lead not progressing for 14+ days is automatically flagged. Managers see it immediately — before the deal dies.</p>
+    </div>
+    <div class="feat-card">
+      <div class="icon">📊</div>
+      <h3>Pipeline Analytics</h3>
+      <p>Win rate, average deal size, leads by stage, source, and industry. Full visual breakdown of your pipeline health.</p>
+    </div>
+    <div class="feat-card">
+      <div class="icon">💰</div>
+      <h3>Revenue Forecast</h3>
+      <p>Probability-weighted close value per stage. Quarterly forecast. Lost reason analysis. Real numbers for real planning.</p>
+    </div>
+    <div class="feat-card">
+      <div class="icon">📝</div>
+      <h3>AI Pipeline Report</h3>
+      <p>Full written intelligence report on demand — executive summary, pipeline health, top opportunities, recommended actions.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ IMPACT ══════════ -->
+<section class="impact" id="impact">
+  <div class="center">
+    <div class="section-label">Business Impact</div>
+    <h2 class="section-title">What actually changes<br>for your team.</h2>
+    <p class="section-sub">Before and after — in terms any sales rep or manager will immediately recognise.</p>
+  </div>
+  <div class="impact-grid">
+    <div class="impact-col bad">
+      <h3>❌ Without the System</h3>
+      <ul class="impact-list">
+        <li><span class="mark">✗</span> 2–3 hours per lead spent on manual research</li>
+        <li><span class="mark">✗</span> Generic emails with low reply rates</li>
+        <li><span class="mark">✗</span> No lead prioritisation — all treated equally</li>
+        <li><span class="mark">✗</span> Reps forget follow-ups — deals go cold silently</li>
+        <li><span class="mark">✗</span> Forecasts based on gut feel, not data</li>
+        <li><span class="mark">✗</span> Stuck deals go unnoticed until it's too late</li>
+        <li><span class="mark">✗</span> Only 34% of time actually spent selling</li>
+        <li><span class="mark">✗</span> Lost deals analysed too late to learn from</li>
+      </ul>
+    </div>
+    <div class="impact-col good">
+      <h3 style="color:var(--orange)">✓ With the System</h3>
+      <ul class="impact-list">
+        <li><span class="mark" style="color:var(--green)">✓</span> Lead enrichment in seconds — AI does the research</li>
+        <li><span class="mark" style="color:var(--green)">✓</span> Every email personalised to the lead's specific context</li>
+        <li><span class="mark" style="color:var(--green)">✓</span> High-score leads surface automatically to the top</li>
+        <li><span class="mark" style="color:var(--green)">✓</span> AI recommends the next step — nothing falls through</li>
+        <li><span class="mark" style="color:var(--green)">✓</span> Probability-weighted forecast with real confidence</li>
+        <li><span class="mark" style="color:var(--green)">✓</span> Stuck deals flagged before the deal dies</li>
+        <li><span class="mark" style="color:var(--green)">✓</span> Reps spend time selling, not researching</li>
+        <li><span class="mark" style="color:var(--green)">✓</span> Lost reason patterns analysed in real time</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ TECH ══════════ -->
+<section class="tech">
+  <div class="center">
+    <div class="section-label">Built With</div>
+    <h2 class="section-title">Production-ready.<br>Demo-ready too.</h2>
+    <p class="section-sub">Built on modern tools. Runs in demo mode with 12 pre-loaded leads — no API key needed to see it in action.</p>
+  </div>
+  <div class="tech-grid">
+    <div class="tech-card">
+      <div class="t-icon">⚡</div>
+      <div><h4>FastAPI</h4><p>Python async backend — fast, modern REST API</p></div>
+    </div>
+    <div class="tech-card">
+      <div class="t-icon">▲</div>
+      <div><h4>Next.js 15</h4><p>React 19, TypeScript, Tailwind CSS frontend</p></div>
+    </div>
+    <div class="tech-card">
+      <div class="t-icon">🤖</div>
+      <div><h4>Claude AI</h4><p>claude-sonnet-4-6 — powers all 5 AI features</p></div>
+    </div>
+    <div class="tech-card">
+      <div class="t-icon">🗄️</div>
+      <div><h4>SQLite</h4><p>Async via aiosqlite, SQLAlchemy 2.0 ORM</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ CTA ══════════ -->
+<section class="cta-section" id="cta">
+  <h2>Your pipeline deserves<br>better than a spreadsheet.</h2>
+  <p>Let AI do the research, scoring, and writing. You focus on closing.</p>
+  <a href="#" class="btn-white">Book a Demo →</a>
+</section>
+
+<!-- ══════════ FOOTER ══════════ -->
+<footer>
+  <p>© 2025 <span>CodeThread</span>. AI Lead-to-Deal System.</p>
+  <p>Built with FastAPI · Next.js · <span>Claude AI</span> · SQLite</p>
+</footer>
+
+</body>
+</html>

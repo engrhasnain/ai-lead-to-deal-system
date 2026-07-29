@@ -1,0 +1,702 @@
+================================================================================
+  AI LEAD-TO-DEAL SYSTEM — PROJECT DOCUMENTATION
+  Version 2.0 | Built by Hasnain | Powered by Claude AI (Anthropic)
+================================================================================
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  TABLE OF CONTENTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  1.  The Problem
+  2.  What This System Solves
+  3.  Who This Is Built For
+  4.  Key Features at a Glance
+  5.  How It Works — Implementation Flow
+  6.  The AI Brain — What Claude Does Inside
+  7.  Tech Stack
+  8.  System Architecture
+  9.  Database Structure
+  10. API Reference Summary
+  11. Pipeline Stages Explained
+  12. Demo Mode vs. Live Mode
+  13. Real Business Impact
+  14. Future Roadmap
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  1. THE PROBLEM
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Every B2B sales team faces the same core problem: too many leads, not enough
+intelligence about them, and too much manual work to manage the pipeline effectively.
+
+Here is what a typical sales rep's day looks like without this system:
+
+  - Spends 2–3 hours researching a new lead on LinkedIn, their website, news articles
+  - Copy-pastes a generic cold email template and slightly personalises it
+  - Adds the lead to a spreadsheet or CRM with no scoring or prioritisation
+  - Forgets to follow up 3 days later because there is no prompt
+  - Has no idea which leads in the pipeline are most likely to close
+  - Reports to the sales manager with a gut-feel pipeline forecast — not data
+
+The result?
+
+  → High-value leads get treated the same as low-value ones — time is wasted
+  → Outreach emails feel generic and get ignored
+  → Deals stall in the pipeline because no one knows what to do next
+  → Pipeline forecasts are guesses, not data-backed projections
+  → Win rates are lower than they should be because follow-up timing is wrong
+  → Sales managers have no reliable visibility into pipeline health
+  → Revenue targets are missed because the funnel leaks at every stage
+
+This is not a small problem. Studies show B2B sales reps spend only 34% of their
+time actually selling — the rest is admin, research, and manual CRM work.
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  2. WHAT THIS SYSTEM SOLVES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+The AI Lead-to-Deal System is an end-to-end intelligent sales pipeline platform
+that replaces manual research, generic outreach, and gut-feel forecasting with
+AI-driven intelligence at every stage of the sales process.
+
+Instead of a sales rep guessing what to do, the AI:
+
+  ✦  ENRICHES every lead automatically — generating a company and contact
+     summary plus an ICP (Ideal Customer Profile) fit rating in seconds
+
+  ✦  SCORES every lead 0–100 based on title seniority, industry fit, deal size,
+     and pipeline stage — so reps know exactly where to focus
+
+  ✦  RECOMMENDS the specific next action for each lead — one precise step,
+     not a vague suggestion
+
+  ✦  GENERATES personalized outreach emails — cold emails, follow-ups,
+     and formal proposals — tailored to the lead's role, company, and context
+
+  ✦  TRACKS the full activity timeline — every enrichment, scoring event,
+     email sent, stage change, and note — in one view
+
+  ✦  FORECASTS pipeline revenue — probability-weighted projections per stage,
+     expected quarterly close value, and lost deal reason analysis
+
+  ✦  PRODUCES AI-written pipeline reports — executive summaries, health analysis,
+     top opportunities, and prioritised recommended actions
+
+In short: this system gives every sales rep the intelligence of a senior analyst
+and the writing ability of a professional copywriter — on demand, for every lead.
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  3. WHO THIS IS BUILT FOR
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  → B2B Sales Teams who manage multiple leads across multiple stages and need
+    to prioritise where to spend their time
+
+  → Sales Development Reps (SDRs) who need to send high-volume but personalised
+    outreach without spending hours writing each email manually
+
+  → Sales Managers who need real visibility into pipeline health, win rates,
+    and revenue forecasts — not spreadsheet guesses
+
+  → Founders and small business owners who are their own sales team and need
+    AI to do the research and writing heavy lifting
+
+  → Revenue Operations teams building or modernising their sales stack without
+    paying for expensive enterprise CRM platforms
+
+  → Agencies and consultants managing client pipelines across multiple accounts
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  4. KEY FEATURES AT A GLANCE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  LEAD MANAGEMENT
+  ├─ Create, update, view, and delete leads
+  ├─ Track lead source: LinkedIn, Referral, Website, Conference, Cold Outreach
+  ├─ Assign deal value and currency per lead
+  ├─ Add free-form notes and lost reasons
+  ├─ Auto-detect stuck leads (>14 days in same stage)
+  └─ Full activity timeline per lead
+
+  PIPELINE STAGE TRACKING
+  ├─ 6 stages: New → Qualified → Proposal → Negotiation → Won → Lost
+  ├─ Days-in-stage tracked automatically per stage entry
+  ├─ Stage changes logged to activity timeline with timestamps
+  └─ Stuck deal alerts when a lead has not progressed in 14+ days
+
+  AI LEAD ENRICHMENT
+  ├─ Generates a 2–3 sentence company and contact intelligence summary
+  ├─ Assigns ICP fit: High / Medium / Low
+  ├─ Considers title seniority, industry, and company context
+  └─ Runs in seconds — replaces hours of manual research
+
+  AI LEAD SCORING (0–100)
+  ├─ Scores based on: title seniority (40%), industry fit (30%),
+  │  deal size (20%), stage progression (10%)
+  ├─ Returns a score + 2-sentence written reasoning
+  ├─ Recommends the appropriate pipeline stage based on score
+  └─ Score thresholds: 75+ = High Priority, 50–74 = Medium, <50 = Low
+
+  AI NEXT-ACTION RECOMMENDATION
+  ├─ Reads stage, score, and industry context
+  ├─ Returns one specific, actionable next step (max 12 words)
+  └─ Examples: "Send final pricing with limited-time incentive" or
+               "Schedule 30-min discovery call this week"
+
+  AI EMAIL GENERATION
+  ├─ 4 email types:
+  │   Cold Outreach    → First contact, value-proposition focused
+  │   Follow-Up 1     → 3 days after cold, adds social proof
+  │   Follow-Up 2     → 7 days, final polite touch
+  │   Proposal Email  → Formal, structured proposal with 30-day plan
+  ├─ Every email personalised to lead name, company, title, and AI summary
+  ├─ Returns full subject line and formatted email body
+  └─ Email open tracking (opened_at timestamp)
+
+  DASHBOARD
+  ├─ Total leads in pipeline
+  ├─ Pipeline value (all non-won, non-lost deals)
+  ├─ Revenue won this month and this quarter
+  ├─ AI actions counter (enrichments + scores + emails)
+  ├─ Quota progress tracker
+  ├─ Deals closing this week (proposal + negotiation leads, sorted by score)
+  ├─ Top 5 leads by score
+  └─ Recent activity feed (last 8 events across all leads)
+
+  PIPELINE ANALYTICS
+  ├─ Lead count and deal value by stage
+  ├─ Win rate percentage
+  ├─ Average deal size
+  ├─ Leads by source (LinkedIn, Referral, etc.)
+  ├─ Leads by industry
+  ├─ High ICP count and scored leads count
+  └─ Visual charts for all metrics
+
+  REVENUE FORECAST
+  ├─ Probability-weighted pipeline value per stage:
+  │   New=5%, Qualified=20%, Proposal=40%, Negotiation=70%, Won=100%
+  ├─ Expected close value this quarter
+  ├─ Stage-by-stage weighted forecast breakdown
+  └─ Lost deal reason analysis (Price, Competitor, No Budget, etc.)
+
+  AI PIPELINE REPORT
+  ├─ AI-written full markdown report on demand
+  ├─ Sections: Executive Summary, Pipeline Health, Top Opportunities,
+  │  Recommended Actions
+  ├─ Uses live pipeline data to generate specific, data-backed insights
+  └─ Printable / exportable format
+
+  ACTIVITY TIMELINE (per lead)
+  ├─ Event types: created, enriched, scored, email_sent, email_opened,
+  │  stage_change, next_action, note_added
+  ├─ Full description and timestamp per event
+  └─ Sorted newest-first, full history preserved
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  5. HOW IT WORKS — IMPLEMENTATION FLOW
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Below is the complete step-by-step flow of how a lead moves through the system
+from first entry to closed deal.
+
+────────────────────────────────────────────────────────────
+  STEP 1 — LEAD ENTRY
+────────────────────────────────────────────────────────────
+
+A new lead is added to the system with the following data:
+
+  Required fields:
+    • Full name
+    • Email address
+    • Company name
+    • Job title / role
+    • Industry
+    • Lead source (LinkedIn / Referral / Website / Conference / Cold Outreach)
+
+  Optional fields:
+    • Deal value (e.g., $45,000 USD)
+    • Notes
+
+  On creation:
+    • Lead enters the pipeline at stage: NEW
+    • Stage entry timestamp recorded
+    • Activity logged: "Lead created from [source]"
+
+────────────────────────────────────────────────────────────
+  STEP 2 — AI LEAD ENRICHMENT
+────────────────────────────────────────────────────────────
+
+The user clicks "Enrich" on any lead. The AI runs instantly and returns:
+
+  • AI Summary: A 2–3 sentence company and contact intelligence brief
+    Example: "TechFlow Solutions is a fast-growing SaaS platform serving
+    mid-market companies. Sarah Chen is the VP of Sales with direct budget
+    authority. Strong ICP match — priority outreach recommended."
+
+  • ICP Fit:
+      High   → Senior title + core ICP industry (SaaS, FinTech, Healthcare,
+                E-Commerce, Logistics, Technology)
+      Medium → Senior title OR core ICP industry, but not both
+      Low    → Junior title + non-core industry
+
+  The enrichment timestamp is saved and the activity log is updated.
+
+────────────────────────────────────────────────────────────
+  STEP 3 — AI LEAD SCORING
+────────────────────────────────────────────────────────────
+
+The user clicks "Score" on any lead. The AI evaluates the lead and returns:
+
+  Scoring criteria:
+    • Title seniority   40% — CEO/Founder/CTO = max; Manager = mid; etc.
+    • Industry fit      30% — SaaS/FinTech = max; Manufacturing = low
+    • Deal size         20% — $50K+ = max; <$15K = low
+    • Stage progression 10% — later stage = higher signal
+
+  Output:
+    • Score: 0–100 integer
+    • Score Reasoning: 2-sentence plain-English explanation
+    • Recommended Stage: where this lead should ideally sit
+
+  Score interpretation:
+    75–100 → High priority — senior decision-maker, strong ICP, fast-track
+    50–74  → Medium priority — needs qualification before advancing
+    0–49   → Low priority — long sales cycle expected, nurture recommended
+
+────────────────────────────────────────────────────────────
+  STEP 4 — AI NEXT-ACTION RECOMMENDATION
+────────────────────────────────────────────────────────────
+
+The user requests a next-action suggestion for any lead. The AI reads:
+  • Current pipeline stage
+  • Lead score
+  • Industry context
+
+And returns ONE specific action in plain English (max 12 words):
+
+  Stage examples:
+    New:         "Send personalized cold outreach email today"
+    Qualified:   "Schedule 30-min discovery call this week"
+    Proposal:    "Follow up on proposal — no response in 48 hours"
+    Negotiation: "Send final pricing with limited-time incentive"
+    Won:         "Send onboarding schedule and welcome kit"
+    Lost:        "Add to 90-day nurture sequence for re-engagement"
+
+  The recommended action is saved to the lead and shown prominently on the lead card.
+
+────────────────────────────────────────────────────────────
+  STEP 5 — AI EMAIL GENERATION
+────────────────────────────────────────────────────────────
+
+The user selects an email type and clicks "Generate Email." The AI writes a
+complete, personalised email using all available lead context.
+
+  Email types and their purpose:
+    Cold Outreach   → First contact. References the company's trajectory, shows
+                      specific value props (AI enrichment, scoring, outreach),
+                      and requests a 20-minute call or Loom video.
+
+    Follow-Up 1     → Sent 3 days after cold email. Adds a data point
+                      (e.g., "a client in your industry reduced deal cycles
+                      from 52 to 31 days"). More specific ask.
+
+    Follow-Up 2     → Sent 7 days after cold. Final polite touch.
+                      States ROI (3.2x average in 6 months).
+                      No pressure — leaves the door open.
+
+    Proposal Email  → Formal proposal. Includes a 30-day implementation plan,
+                      expected 90-day outcomes (45% less manual research,
+                      30% more qualified pipeline, 25% higher close rate),
+                      and requests a call to walk through it.
+
+  Each email includes:
+    • A personalised subject line
+    • A full email body with name, company, and context woven in
+    • Saved to the database and linked to the lead
+    • Open tracking (opened_at timestamp when marked)
+
+────────────────────────────────────────────────────────────
+  STEP 6 — STAGE PROGRESSION
+────────────────────────────────────────────────────────────
+
+As the lead advances through conversations and meetings, the user updates
+the pipeline stage. The system:
+
+  • Records the stage change timestamp (stage_entered_at)
+  • Logs the transition to the activity timeline:
+    "Moved from Qualified → Proposal"
+  • Calculates days_in_stage from stage entry to now
+  • Flags the lead as STUCK if it has been in the same stage for 14+ days
+    without progressing
+
+  Full pipeline progression:
+    NEW → QUALIFIED → PROPOSAL → NEGOTIATION → WON
+                                              → LOST (with lost_reason)
+
+  Lost reasons tracked: Price, Competitor, No Budget, Ghosted, Timeline, Other
+
+────────────────────────────────────────────────────────────
+  STEP 7 — PIPELINE ANALYTICS
+────────────────────────────────────────────────────────────
+
+The analytics page gives a real-time view of the entire pipeline:
+
+  • Total leads and total deal value across all stages
+  • Win rate (won ÷ all closed × 100)
+  • Average deal size
+  • Lead count and value broken down by every stage
+  • Lead count by source (LinkedIn vs Referral vs Website, etc.)
+  • Lead count by industry (SaaS vs FinTech vs Healthcare, etc.)
+  • Count of High ICP leads
+  • Count of scored leads
+
+  All data visualised as bar charts and summary cards on the analytics page.
+
+────────────────────────────────────────────────────────────
+  STEP 8 — REVENUE FORECAST
+────────────────────────────────────────────────────────────
+
+The forecast applies probability weights to every deal in the pipeline:
+
+  Stage probabilities:
+    New          → 5%  probability of closing
+    Qualified    → 20% probability of closing
+    Proposal     → 40% probability of closing
+    Negotiation  → 70% probability of closing
+    Won          → 100% (already closed)
+    Lost         → 0%
+
+  Output:
+    • Weighted pipeline value (sum of all deals × their stage probability)
+    • Expected close value this quarter (weighted × 0.75 buffer)
+    • Per-stage breakdown: raw value, weighted value, probability %, deal count
+    • Lost deal reason breakdown — shows why deals are lost (Price, Competitor, etc.)
+
+────────────────────────────────────────────────────────────
+  STEP 9 — AI PIPELINE REPORT
+────────────────────────────────────────────────────────────
+
+On demand, the AI generates a full written pipeline intelligence report using
+live analytics data. Sections include:
+
+  ## Executive Summary
+    → Overall pipeline health in plain English, total leads, value, win rate
+
+  ## Pipeline Health
+    → Stage distribution analysis, ICP breakdown, qualification efficiency
+
+  ## Top Opportunities
+    → Which deals to focus on, which verticals close fastest, proposal strategy
+
+  ## Recommended Actions
+    → Today / This Week / This Month / Ongoing — specific, prioritised steps
+
+  The report is rendered in formatted markdown and is printable/exportable.
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  6. THE AI BRAIN — WHAT CLAUDE DOES INSIDE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+The AI powering this system is Claude (claude-sonnet-4-6) by Anthropic.
+
+  ┌─────────────────────────────────────────────────────────────────────────┐
+  │  AI TASK                  │  WHAT CLAUDE DOES                          │
+  ├─────────────────────────────────────────────────────────────────────────┤
+  │  Lead Enrichment          │  Reads name, title, company, industry and  │
+  │                           │  generates a sales-intelligence summary     │
+  │                           │  + ICP fit classification (High/Med/Low)   │
+  ├─────────────────────────────────────────────────────────────────────────┤
+  │  Lead Scoring             │  Applies weighted criteria across title,   │
+  │                           │  industry, deal size, and stage to produce  │
+  │                           │  a 0–100 score with written reasoning       │
+  ├─────────────────────────────────────────────────────────────────────────┤
+  │  Next Action              │  Reads stage, score, and industry to       │
+  │                           │  recommend one precise next step            │
+  │                           │  in plain English (max 12 words)           │
+  ├─────────────────────────────────────────────────────────────────────────┤
+  │  Email Generation         │  Writes complete, personalised B2B sales   │
+  │                           │  emails (cold, follow-ups, proposals) using │
+  │                           │  lead context and AI summary               │
+  ├─────────────────────────────────────────────────────────────────────────┤
+  │  Pipeline Report          │  Reads live analytics data and writes a    │
+  │                           │  full structured intelligence report with   │
+  │                           │  specific numbers and prioritised actions   │
+  └─────────────────────────────────────────────────────────────────────────┘
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  7. TECH STACK
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  BACKEND
+  ├─ Language:     Python 3.11+
+  ├─ Framework:    FastAPI (async REST API)
+  ├─ Package Mgr:  uv
+  ├─ Database:     SQLite (async via aiosqlite, SQLAlchemy 2.0 ORM)
+  └─ AI Engine:    Anthropic Claude (claude-sonnet-4-6)
+
+  FRONTEND
+  ├─ Framework:    Next.js 15 (React 19, TypeScript)
+  ├─ Styling:      Tailwind CSS
+  ├─ Charts:       Recharts (D3-based)
+  └─ Icons/UI:     Lucide React
+
+  DEPLOYMENT
+  ├─ Backend:      Port 8000 via uvicorn
+  └─ Frontend:     Port 3000 via Next.js
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  8. SYSTEM ARCHITECTURE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  ┌──────────────────────────────────────────────────────────┐
+  │               FRONTEND (Next.js 15)                      │
+  │   Dashboard | Leads | Pipeline | Outreach | Analytics    │
+  └──────────────────────┬───────────────────────────────────┘
+                         │  REST API calls
+                         ▼
+  ┌──────────────────────────────────────────────────────────┐
+  │               BACKEND (FastAPI)                          │
+  │                                                          │
+  │   /dashboard  /leads  /analytics  /forecast              │
+  │                                                          │
+  │   ┌────────────────────────────────────┐                │
+  │   │           AI Module (ai.py)         │                │
+  │   │  enrich_lead()    → Claude API      │                │
+  │   │  score_lead()     → Claude API      │                │
+  │   │  next_action()    → Claude API      │                │
+  │   │  generate_email() → Claude API      │                │
+  │   │  pipeline_report()→ Claude API      │                │
+  │   └──────────────────┬─────────────────┘                │
+  │                       ▼                                  │
+  │   ┌────────────────────────────────────┐                │
+  │   │   SQLite Database (SQLAlchemy)      │                │
+  │   │   leads | emails | lead_activities  │                │
+  │   └────────────────────────────────────┘                │
+  └──────────────────────────────────────────────────────────┘
+                         │
+                         ▼
+         ┌───────────────────────────┐
+         │    Claude AI (Anthropic)  │
+         │    claude-sonnet-4-6      │
+         └───────────────────────────┘
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  9. DATABASE STRUCTURE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  TABLE: leads
+  ├─ id, name, email, company, title, industry
+  ├─ source  (LinkedIn / Referral / Website / Conference / Cold Outreach / manual)
+  ├─ stage   (new / qualified / proposal / negotiation / won / lost)
+  ├─ score   (0–100, nullable), score_reasoning (text)
+  ├─ deal_value (float), currency (default: USD)
+  ├─ next_action (text, nullable)
+  ├─ ai_summary  (text, nullable)
+  ├─ icp_fit     (high / medium / low, nullable)
+  ├─ enriched_at (datetime, nullable)
+  ├─ notes       (text, nullable)
+  ├─ lost_reason (text, nullable)
+  ├─ stage_entered_at (datetime)
+  └─ created_at, updated_at
+
+  TABLE: emails
+  ├─ id, lead_id (FK → leads)
+  ├─ email_type  (cold / follow_up_1 / follow_up_2 / proposal)
+  ├─ subject     (string)
+  ├─ body        (text)
+  ├─ generated_at (datetime)
+  └─ opened_at   (datetime, nullable)
+
+  TABLE: lead_activities
+  ├─ id, lead_id (FK → leads)
+  ├─ event_type  (created / enriched / scored / email_sent / email_opened /
+  │               stage_change / next_action / note_added)
+  ├─ description (string, max 500 chars)
+  └─ created_at  (datetime)
+
+  RELATIONSHIPS:
+  Lead → Emails          (one lead has many generated emails)
+  Lead → LeadActivities  (one lead has a full activity history)
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  10. API REFERENCE SUMMARY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  All endpoints are under:  http://localhost:8000
+
+  DASHBOARD
+  ─────────
+  GET    /dashboard                        KPIs, top leads, activity feed, quota progress
+
+  LEADS (CRUD)
+  ────────────
+  GET    /leads                            List all leads (optional ?stage= filter)
+  POST   /leads                            Create a new lead
+  GET    /leads/{id}                       Get one lead with emails + activities
+  PATCH  /leads/{id}                       Update lead (stage, notes, values, etc.)
+  DELETE /leads/{id}                       Delete lead and all related data
+
+  LEAD ACTIVITIES
+  ───────────────
+  GET    /leads/{id}/activities            Get full activity timeline for a lead
+
+  AI ACTIONS (per lead)
+  ─────────────────────
+  POST   /leads/{id}/enrich                Run AI enrichment → ICP fit + summary
+  POST   /leads/{id}/score                 Run AI scoring → 0–100 score + reasoning
+  POST   /leads/{id}/next-action           Get AI next-action recommendation
+  POST   /leads/{id}/email                 Generate AI email (body: {"email_type": "cold"})
+  POST   /leads/{id}/email/{email_id}/open Mark email as opened
+
+  ANALYTICS
+  ─────────
+  GET    /analytics/pipeline               Stage/source/industry breakdown, win rate
+  GET    /analytics/report                 AI-written full pipeline report (markdown)
+  GET    /analytics/forecast               Probability-weighted forecast + lost reasons
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  11. PIPELINE STAGES EXPLAINED
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  NEW
+  → Lead just entered the system. Not yet enriched or scored.
+  → AI action: Enrich → Score → Get Next Action → Send Cold Email
+  → Close probability: 5%
+
+  QUALIFIED
+  → Lead has been researched, scored, and confirmed worth pursuing.
+  → Discovery call completed or scheduled.
+  → AI action: Schedule call / Send ROI case study
+  → Close probability: 20%
+
+  PROPOSAL
+  → Formal proposal sent to the lead.
+  → Awaiting response and negotiation.
+  → AI action: Follow up / Address objections / Walk through proposal
+  → Close probability: 40%
+
+  NEGOTIATION
+  → Deal is being actively negotiated. Pricing, terms, and timeline being finalised.
+  → AI action: Send final pricing / Loop in legal / Confirm go-live timeline
+  → Close probability: 70%
+
+  WON
+  → Deal is closed. Payment or contract signed.
+  → AI action: Send onboarding schedule / Introduce CSM / Schedule kickoff call
+  → Close probability: 100%
+
+  LOST
+  → Deal did not close. Reason recorded.
+  → Lost reasons: Price / Competitor / No Budget / Ghosted / Timeline
+  → AI action: Add to 90-day nurture sequence / Request loss reason feedback
+  → Close probability: 0%
+
+  STUCK DEAL DETECTION:
+  → Any lead in new / qualified / proposal / negotiation for more than 14 days
+    without a stage change is automatically flagged as STUCK.
+  → These appear highlighted in the pipeline view for immediate attention.
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  12. DEMO MODE VS. LIVE MODE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  DEMO MODE (DEMO_MODE=true, default):
+  ─────────────────────────────────────
+  → AI enrichment uses rule-based ICP classification (title + industry matching)
+  → AI scoring uses a points-based algorithm across title, industry, deal value
+  → Next-action uses stage-based pre-written action suggestions
+  → Emails use polished pre-written templates personalised with lead name/company
+  → Pipeline report uses a structured template with live data inserted
+  → No API key required — everything works out of the box
+  → Pre-loaded with 12 realistic demo leads across all stages
+
+  LIVE MODE (ANTHROPIC_API_KEY set):
+  ────────────────────────────────────
+  → All AI tasks call Claude (claude-sonnet-4-6) directly
+  → Enrichment summaries are fully contextual and dynamic
+  → Scoring reasoning adapts to every unique lead combination
+  → Emails are genuinely personalised to each lead's specific context
+  → Pipeline reports are written fresh from real-time analytics data
+
+  Environment variables:
+    ANTHROPIC_API_KEY  → Claude API access key
+    DEMO_MODE          → Set to "false" to enable live AI mode
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  13. REAL BUSINESS IMPACT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  WITHOUT THIS SYSTEM:
+  ─────────────────────
+  ✗ 2–3 hours per lead spent on manual LinkedIn and website research
+  ✗ Generic outreach emails with low open and reply rates
+  ✗ No lead prioritisation — all leads treated equally regardless of value
+  ✗ Sales reps forget to follow up — deals go cold and die silently
+  ✗ Pipeline forecasts are guesses — finance teams cannot plan accurately
+  ✗ No visibility into why deals are lost — lessons never learned
+  ✗ Sales managers can't see which deals need intervention until too late
+  ✗ Only 34% of a rep's time is spent actually selling
+
+  WITH THIS SYSTEM:
+  ──────────────────
+  ✓ Lead enrichment in seconds — hours of research replaced by AI
+  ✓ Every email personalised to the lead's role, company, and context
+  ✓ High-score, high-ICP leads automatically surface to the top
+  ✓ AI recommends the next action so reps never wonder what to do
+  ✓ Probability-weighted forecasts give finance real numbers to plan with
+  ✓ Lost reasons tracked and analysed — patterns inform future strategy
+  ✓ Stuck deals flagged automatically — managers intervene before it's too late
+  ✓ Reps spend time selling, not researching and writing
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  14. FUTURE ROADMAP
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  → LinkedIn scraping integration: auto-import leads directly from LinkedIn profiles
+  → Email sequence automation: schedule cold + follow-up emails automatically
+  → HubSpot / Salesforce sync: bi-directional CRM integration
+  → Team support: multiple reps per pipeline with role-based access
+  → AI call notes: paste call transcript, AI extracts next action and stage recommendation
+  → Competitor intelligence: AI flags when a lead mentions a competitor and suggests response
+  → Email reply analysis: AI reads a lead's reply and recommends the follow-on message
+  → Slack notifications: real-time alerts when a lead is stuck or a high-score lead goes cold
+  → Lead import via CSV: bulk upload leads from spreadsheets
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  QUICK START
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  BACKEND:
+    cd backend
+    uv sync
+    uv run uvicorn main:app --reload --port 8000
+
+  FRONTEND:
+    cd frontend
+    npm install
+    npm run dev
+
+  Open browser at:  http://localhost:3000
+  API docs at:      http://localhost:8000/docs
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  END OF DOCUMENTATION
+  AI Lead-to-Deal System | Built with FastAPI + Next.js + Claude AI
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

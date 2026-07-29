@@ -1,0 +1,227 @@
+================================================================================
+  CONTENT WRITER BRIEF — AI LEAD-TO-DEAL SYSTEM
+  For: CodeThread Website / Marketing Content
+================================================================================
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  WHAT IS THIS PROJECT?
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+The AI Lead-to-Deal System is an intelligent sales pipeline platform that helps
+B2B sales teams turn leads into closed deals — faster and with less manual work.
+
+Think of it as giving every sales rep their own AI research assistant, copywriter,
+and sales coach — all running in the background, ready at the click of a button.
+
+The system takes a lead (a potential client) and helps the sales team:
+  - Instantly understand who they are and whether they are worth pursuing
+  - Know exactly what score (priority level) to give them
+  - Know exactly what to do next
+  - Send them the right email without writing it from scratch
+  - Track the deal through every stage from first contact to closed won
+  - Forecast how much revenue to expect and when
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  WHAT PROBLEM DOES IT SOLVE?
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+B2B sales is one of the most manual, repetitive, and time-consuming jobs in
+any company. Here is the reality for most sales reps today:
+
+  - They spend 2–3 hours researching a new lead before even reaching out
+  - They copy-paste a generic email template with minimal personalisation
+  - They forget to follow up 3 days later and the lead goes cold
+  - They treat a $5,000 deal the same as a $50,000 deal — no prioritisation
+  - They have no reliable way to predict when or whether a deal will close
+  - Their manager asks "how is the pipeline?" and the honest answer is "I'm not sure"
+
+Studies show B2B sales reps spend only 34% of their time actually selling.
+The rest is admin, research, and writing emails.
+
+This system fixes that. It automates the research, scoring, writing, and
+forecasting — so reps spend more time talking to people and closing deals.
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  WHAT DOES IT ACTUALLY DO? (In Plain English)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. YOU ADD A LEAD
+   The sales rep enters basic details: the person's name, email, company,
+   job title, industry, and where the lead came from (LinkedIn, referral, etc.).
+
+2. THE AI ENRICHES THE LEAD IN SECONDS
+   The AI reads the lead's details and instantly produces:
+   → A 2–3 sentence intelligence summary about the company and contact
+   → An ICP fit rating: High / Medium / Low
+     (ICP = Ideal Customer Profile — how closely they match your ideal buyer)
+
+   Example AI summary: "TechFlow Solutions is a fast-growing SaaS platform
+   serving mid-market companies. Sarah Chen is the VP of Sales with direct
+   budget authority. Strong ICP match — priority outreach recommended."
+
+3. THE AI SCORES THE LEAD (0–100)
+   The AI gives every lead a score based on:
+   → How senior their job title is (a CEO scores higher than a manager)
+   → How well their industry fits (SaaS/FinTech = high; Manufacturing = low)
+   → How large the deal is ($50K+ scores higher than $5K)
+   → What stage they are at in the pipeline
+
+   A score of 80+ means: "drop everything and focus here."
+   A score of 30 means: "put in a nurture sequence and revisit later."
+
+4. THE AI TELLS YOU WHAT TO DO NEXT
+   Instead of wondering "what should I do with this lead?", the AI gives
+   one clear, specific next action:
+   → "Send personalized cold outreach email today"
+   → "Follow up on proposal — no response in 48 hours"
+   → "Send final pricing with limited-time incentive"
+
+5. THE AI WRITES THE EMAIL FOR YOU
+   With one click, the AI generates a complete, personalised sales email:
+   → Cold Outreach     — First contact, professional and value-focused
+   → Follow-Up 1       — Adds a data point, softer ask, 3 days after cold
+   → Follow-Up 2       — Final polite touch, 7 days after cold
+   → Proposal Email    — Formal proposal with 30-day plan and expected outcomes
+
+   Every email uses the lead's actual name, company, role, and AI summary —
+   so it reads like it was written specifically for them, not copy-pasted.
+
+6. THE PIPELINE TRACKS EVERY STAGE
+   Deals move through 6 stages:
+   New → Qualified → Proposal → Negotiation → Won → Lost
+
+   The system tracks how many days each lead has been at each stage.
+   If a deal has not moved in 14 days, it gets flagged as "stuck"
+   so the sales manager can step in before the deal dies.
+
+7. THE SYSTEM FORECASTS REVENUE
+   The AI applies probability weights to every deal:
+   → Leads in "New" stage: 5% chance of closing
+   → Leads in "Proposal" stage: 40% chance of closing
+   → Leads in "Negotiation" stage: 70% chance of closing
+
+   This gives a realistic weighted pipeline forecast and an expected
+   quarterly close value — based on data, not gut feel.
+
+8. THE AI WRITES A FULL PIPELINE REPORT
+   On demand, the AI reads all the live data and writes a professional
+   pipeline intelligence report covering:
+   → Executive summary of pipeline health
+   → Stage distribution analysis
+   → Top opportunities to focus on
+   → Specific recommended actions for today, this week, this month
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  ONE-LINE SUMMARY FOR THE WEBSITE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+"Know your leads. Score them instantly. Write the perfect email. Close more deals."
+
+Or alternatively:
+
+"Your AI sales co-pilot — from first lead to closed deal, every step intelligently guided."
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  WHO IS THIS FOR?
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  → B2B sales teams who manage multiple leads across multiple stages
+  → Sales Development Reps (SDRs) who send high-volume cold outreach
+  → Sales managers who need pipeline visibility and accurate forecasts
+  → Founders and solo sales people who are their own entire sales team
+  → Revenue operations teams modernising their sales stack
+  → Agencies managing client sales pipelines
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  KEY FACTS FOR CONTENT USE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  → AI enrichment takes seconds — replacing 2–3 hours of manual research
+  → Lead scoring 0–100 with written reasoning (not just a number)
+  → 4 email types generated: cold, follow-up 1, follow-up 2, proposal
+  → 6 pipeline stages tracked with time-in-stage monitoring
+  → Stuck deal alert after 14 days without progression
+  → Probability-weighted forecast per stage (5% → 20% → 40% → 70% → 100%)
+  → AI pipeline report with executive summary and prioritised actions
+  → Works in demo mode with zero setup — 12 pre-loaded realistic leads
+  → Powered by Claude AI (Anthropic) — claude-sonnet-4-6
+  → Built with: FastAPI (Python) + Next.js 15 (React/TypeScript) + SQLite
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  SUGGESTED PRODUCT PAGE STRUCTURE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Use this as your content writing guide — sections in order:
+
+  SECTION 1 — HERO
+  Headline:    Something that speaks to the pain of manual sales work
+  Sub-line:    What the system gives the rep (speed, intelligence, automation)
+  CTA:         "Book a Demo" or "See It in Action"
+
+  SECTION 2 — THE PROBLEM
+  Heading:     "Still doing your sales research manually?"
+  Content:     3–4 bullet points on the daily pain of B2B sales reps
+  Goal:        Make the reader nod and say "yes, that's me every day"
+
+  SECTION 3 — THE SOLUTION
+  Heading:     "Meet your AI-powered sales co-pilot"
+  Content:     4 cards — Enrich, Score, Email, Forecast
+  Goal:        Show the four core superpowers in one glance
+
+  SECTION 4 — HOW IT WORKS
+  Heading:     "From new lead to closed deal — in 8 intelligent steps"
+  Content:     Numbered steps as described above in plain English
+  Goal:        Show the complete journey and how AI fits at every stage
+
+  SECTION 5 — KEY FEATURES
+  Content:     Full feature grid with icons — all 10 features listed
+  Goal:        Show depth and completeness of the platform
+
+  SECTION 6 — PIPELINE STAGES
+  Content:     Visual of the 6 stages with close probability at each
+  Goal:        Make the pipeline concept clear and visual
+
+  SECTION 7 — BEFORE VS. AFTER
+  Content:     Two columns — without system vs. with system
+  Goal:        Show the measurable difference in rep productivity
+
+  SECTION 8 — CTA
+  Heading:     "Ready to close more deals with less manual work?"
+  Button:      "Book a Demo" or "Get Started"
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  TONE GUIDANCE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  → Confident but not arrogant — the AI helps, it does not replace the rep
+  → Data-driven — use specific numbers wherever possible
+  → Practical — speak in terms of daily rep workflow, not abstract concepts
+  → Modern — this is an AI-first product, not a "nice extra feature"
+  → Brief — sales people are busy; short sentences, clear benefits
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  NOTE FROM THE DEVELOPER
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+I am responsible for building the product and providing this content idea and
+brief. The final layout, design, and website structure will be handled by the
+design and website team. This document gives you everything you need to write
+compelling content — the product page structure above is a suggestion,
+and the design team can adapt it to whatever theme and layout they choose.
+
+If you need any additional technical detail or have questions about specific
+features, please reach out and I will clarify.
+
+================================================================================
+  END OF BRIEF
+  AI Lead-to-Deal System | CodeThread
+================================================================================
