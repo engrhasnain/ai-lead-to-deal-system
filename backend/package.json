@@ -13,6 +13,7 @@
     "prestart:dev": "prisma generate && prisma db push --skip-generate --accept-data-loss",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
+    "prestart:prod": "prisma generate && prisma db push --skip-generate --accept-data-loss",
     "start:prod": "node dist/main",
     "db:push": "prisma db push --skip-generate",
     "prisma:generate": "prisma generate",
