@@ -2,7 +2,13 @@
 // Mirrors backend-fastapi-archive/models.py (Lead, Email, LeadActivity) field-for-field.
 
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
+  // Hostinger's build container and runtime container are apparently
+  // different environments (different OpenSSL versions) — ship engine
+  // binaries for every likely Debian/Ubuntu OpenSSL variant plus musl
+  // (Alpine) so Prisma can pick whichever one actually matches at runtime,
+  // instead of the single "native" guess made at build time.
+  binaryTargets = ["native", "debian-openssl-1.1.x", "debian-openssl-3.0.x", "linux-musl-openssl-3.0.x"]
 }
 
 datasource db {

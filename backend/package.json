@@ -7,7 +7,6 @@
   "scripts": {
     "prebuild": "prisma generate",
     "build": "nest build",
-    "postbuild": "node -e \"const fs=require('fs');fs.mkdirSync('dist/prisma',{recursive:true});fs.copyFileSync('prisma/schema.prisma','dist/prisma/schema.prisma')\"",
     "format": "prettier --write \"src/**/*.ts\"",
     "prestart": "prisma generate && prisma db push --skip-generate --accept-data-loss",
     "start": "node dist/main",

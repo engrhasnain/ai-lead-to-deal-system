@@ -2,9 +2,9 @@ import 'reflect-metadata';
 import * as dotenv from 'dotenv';
 dotenv.config(); // populate process.env from .env before any config below is read
 
-import { execFileSync } from 'child_process';
 import * as path from 'path';
 import * as fs from 'fs';
+import { PrismaClient } from '@prisma/client';
 import { HttpException, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
@@ -12,35 +12,68 @@ import { AppModule } from './app.module';
 import { HttpExceptionFilter } from './common/filters/http-exception.filter';
 
 // Some hosts (e.g. Hostinger's Node app runner) invoke `node dist/main.js`
-// directly, bypassing npm's prestart lifecycle hooks — so the schema-push
-// step must not depend on npm running it. Do it here instead, before the
-// Nest app (and anything that queries the DB in onModuleInit) boots.
+// directly, bypassing npm's prestart lifecycle hooks — so schema creation
+// must not depend on npm running it. Do it here instead, before the Nest
+// app (and anything that queries the DB in onModuleInit) boots.
 //
-// Two things deliberately avoid relying on `process.cwd()` or a relative
-// DATABASE_URL, since Hostinger's runtime working directory and which
-// source files survive deployment (it ships dist/ + node_modules/, but not
-// the original prisma/ source folder) turned out not to match local dev:
-//   1. The schema is read from a copy placed at dist/prisma/schema.prisma
-//      (see the "postbuild" script) and located via `__dirname`, which is
-//      always the compiled main.js's own folder regardless of cwd.
-//   2. DATABASE_URL is overridden to an absolute path before anything
-//      touches the database, so both this CLI call and the Nest app's own
-//      PrismaClient definitely open the exact same file.
-//
-// Calls the locally-installed prisma CLI's JS entry point directly with
-// `node` (not via `npx prisma`, which can decide to download a different/
-// newer major version instead of using the one already in node_modules —
-// slow at best, broken at worst; and not via the .bin/prisma(.cmd) wrapper,
-// which needs a shell on Windows and complicates cross-platform behavior).
-//
-// Prisma's native engine binaries (query engine, schema engine) also lose
-// their executable bit somewhere in Hostinger's deploy pipeline (build and
-// runtime appear to be separate filesystems/containers, and whatever copies
-// artifacts between them doesn't preserve permissions) — restore it on
-// every binary-looking file before anything tries to spawn one. This has
-// to run for the *app's own* query engine too (node_modules/.prisma/client),
-// not just the schema-engine used by db push, or the app boots fine here
-// but still crashes the moment a real request needs the database.
+// This deliberately avoids `prisma db push` (the CLI/schema-engine path) —
+// on Hostinger the schema-engine binary panics at runtime (likely a
+// build-container vs. runtime-container OpenSSL mismatch) even after fixing
+// its execute permission. Instead, the exact CREATE TABLE statements Prisma
+// itself generates for this schema (captured once via a local `db push` and
+// pasted in below) are executed directly through the query engine, which
+// — unlike the schema-engine — now has multi-platform binaries bundled via
+// `binaryTargets` in schema.prisma and is confirmed working.
+const SCHEMA_SQL = [
+  `CREATE TABLE IF NOT EXISTS "leads" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "name" TEXT NOT NULL,
+    "email" TEXT NOT NULL,
+    "company" TEXT NOT NULL,
+    "title" TEXT NOT NULL,
+    "industry" TEXT NOT NULL,
+    "source" TEXT NOT NULL DEFAULT 'manual',
+    "stage" TEXT NOT NULL DEFAULT 'new',
+    "score" INTEGER,
+    "score_reasoning" TEXT,
+    "deal_value" REAL,
+    "currency" TEXT NOT NULL DEFAULT 'USD',
+    "next_action" TEXT,
+    "ai_summary" TEXT,
+    "icp_fit" TEXT,
+    "enriched_at" DATETIME,
+    "notes" TEXT,
+    "lost_reason" TEXT,
+    "stage_entered_at" DATETIME,
+    "created_at" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+  )`,
+  `CREATE TABLE IF NOT EXISTS "emails" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "lead_id" INTEGER NOT NULL,
+    "email_type" TEXT NOT NULL,
+    "subject" TEXT NOT NULL,
+    "body" TEXT NOT NULL,
+    "generated_at" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "opened_at" DATETIME,
+    CONSTRAINT "emails_lead_id_fkey" FOREIGN KEY ("lead_id") REFERENCES "leads" ("id") ON DELETE CASCADE ON UPDATE CASCADE
+  )`,
+  `CREATE TABLE IF NOT EXISTS "lead_activities" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "lead_id" INTEGER NOT NULL,
+    "event_type" TEXT NOT NULL,
+    "description" TEXT NOT NULL,
+    "created_at" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT "lead_activities_lead_id_fkey" FOREIGN KEY ("lead_id") REFERENCES "leads" ("id") ON DELETE CASCADE ON UPDATE CASCADE
+  )`,
+];
+
+// Prisma's native engine binaries also lose their executable bit somewhere
+// in Hostinger's deploy pipeline (build and runtime appear to be separate
+// filesystems/containers, and whatever copies artifacts between them
+// doesn't preserve permissions) — restore it on every binary-looking file
+// before the query engine (used below, and by the app's own PrismaService)
+// tries to load one.
 function restoreEngineExecutePermissions(projectRoot: string) {
   const dirs = [
     path.join(projectRoot, 'node_modules', '@prisma'),
@@ -65,48 +98,30 @@ function restoreEngineExecutePermissions(projectRoot: string) {
   dirs.forEach(walk);
 }
 
-function ensureDatabaseSchema() {
+async function ensureDatabaseSchema() {
   const projectRoot = path.join(__dirname, '..'); // dist/ -> project root
-  const schemaPath = path.join(__dirname, 'prisma', 'schema.prisma');
-  const prismaCli = path.join(projectRoot, 'node_modules', 'prisma', 'build', 'index.js');
   const dbPath = path.join(projectRoot, 'leads.db');
 
   process.env.DATABASE_URL = `file:${dbPath}`;
   restoreEngineExecutePermissions(projectRoot);
 
-  if (!fs.existsSync(schemaPath)) {
-    // eslint-disable-next-line no-console
-    console.error(`Prisma schema not found at ${schemaPath} — skipping schema push.`);
-    return;
-  }
-  if (!fs.existsSync(prismaCli)) {
-    // eslint-disable-next-line no-console
-    console.error(`Prisma CLI not found at ${prismaCli} — skipping schema push.`);
-    return;
-  }
-
+  const prisma = new PrismaClient();
   try {
-    const result = execFileSync(
-      process.execPath,
-      [prismaCli, 'db', 'push', '--schema', schemaPath, '--accept-data-loss', '--skip-generate'],
-      { cwd: projectRoot, env: process.env, timeout: 60_000 },
-    );
+    for (const statement of SCHEMA_SQL) {
+      await prisma.$executeRawUnsafe(statement);
+    }
     // eslint-disable-next-line no-console
-    console.log(result.toString());
+    console.log('Database schema ensured (leads, emails, lead_activities).');
   } catch (err) {
-    const e = err as { status?: number; signal?: string; stdout?: Buffer; stderr?: Buffer; message?: string };
     // eslint-disable-next-line no-console
-    console.error(
-      `Prisma db push failed during startup — exit code: ${e.status}, signal: ${e.signal}\n` +
-        `--- stdout ---\n${e.stdout?.toString() || '(empty)'}\n` +
-        `--- stderr ---\n${e.stderr?.toString() || '(empty)'}\n` +
-        `--- message ---\n${e.message || '(none)'}`,
-    );
+    console.error('Failed to create database schema:', err);
+  } finally {
+    await prisma.$disconnect();
   }
 }
 
 async function bootstrap() {
-  ensureDatabaseSchema();
+  await ensureDatabaseSchema();
 
   const publicDemoMode = (process.env.PUBLIC_DEMO_MODE ?? 'true').toLowerCase() === 'true';
   const allowedOrigins = (process.env.ALLOWED_ORIGIN || 'http://localhost:3000')
