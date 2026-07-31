@@ -1,17 +1,20 @@
 import { Injectable, Logger, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
-import { PrismaBetterSQLite3 } from '@prisma/adapter-better-sqlite3';
+import { PrismaLibSQL } from '@prisma/adapter-libsql';
 
-// Uses the better-sqlite3 driver adapter instead of Prisma's own native
-// query engine — see schema.prisma for why. DATABASE_URL is read here
-// explicitly because driver adapters construct their own connection
-// rather than Prisma Client resolving datasource.url = env(...) itself.
-function createAdapter(): PrismaBetterSQLite3 {
+// Uses the libSQL driver adapter instead of Prisma's own native query
+// engine — see schema.prisma for why. better-sqlite3 was tried first, but
+// Hostinger's build container can't compile any native addon from source
+// (its bundled node-gyp/gyp requires Python 3.8+, and the container only
+// has Python 3.6.8) and no prebuilt binary matched. libSQL's native binding
+// ships as per-platform npm packages resolved directly by npm install
+// (e.g. @libsql/linux-x64-gnu) — no node-gyp involved at all. DATABASE_URL
+// is read here explicitly because driver adapters construct their own
+// connection rather than Prisma Client resolving datasource.url = env(...)
+// itself.
+function createAdapter(): PrismaLibSQL {
   const url = process.env.DATABASE_URL || 'file:./leads.db';
-  // better-sqlite3 (unlike Prisma's own datasource url) takes a plain file
-  // path, not a "file:" URL scheme — strip the prefix if present.
-  const filePath = url.startsWith('file:') ? url.slice('file:'.length) : url;
-  return new PrismaBetterSQLite3({ url: filePath });
+  return new PrismaLibSQL({ url });
 }
 
 @Injectable()
