@@ -131,6 +131,13 @@ async function bootstrap() {
 
   const app = await NestFactory.create(AppModule);
 
+  // All backend routes now live under /api/* — required once this backend
+  // is merged behind the same origin as the frontend (see root server.js),
+  // since the frontend has its own pages at the same bare paths (e.g. a
+  // /dashboard page vs. this API's /dashboard endpoint) that would
+  // otherwise collide.
+  app.setGlobalPrefix('api');
+
   app.enableCors({
     origin: allowedOrigins,
     credentials: true,
