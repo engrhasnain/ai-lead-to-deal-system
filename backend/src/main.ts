@@ -2,13 +2,50 @@ import 'reflect-metadata';
 import * as dotenv from 'dotenv';
 dotenv.config(); // populate process.env from .env before any config below is read
 
+import { execFileSync } from 'child_process';
+import * as path from 'path';
+import * as fs from 'fs';
 import { HttpException, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import { HttpExceptionFilter } from './common/filters/http-exception.filter';
 
+// Some hosts (e.g. Hostinger's Node app runner) invoke `node dist/main.js`
+// directly, bypassing npm's prestart lifecycle hooks — so the schema-push
+// step must not depend on npm running it. Do it here instead, before the
+// Nest app (and anything that queries the DB in onModuleInit) boots.
+//
+// Calls the locally-installed prisma CLI's JS entry point directly with
+// `node` (not via `npx prisma`, which can decide to download a different/
+// newer major version instead of using the one already in node_modules —
+// slow at best, broken at worst; and not via the .bin/prisma(.cmd) wrapper,
+// which needs a shell on Windows and complicates cross-platform behavior).
+function ensureDatabaseSchema() {
+  const projectRoot = process.cwd();
+  const prismaCli = path.join(projectRoot, 'node_modules', 'prisma', 'build', 'index.js');
+
+  if (!fs.existsSync(prismaCli)) {
+    // eslint-disable-next-line no-console
+    console.error(`Prisma CLI not found at ${prismaCli} — skipping schema push.`);
+    return;
+  }
+
+  try {
+    execFileSync(
+      process.execPath,
+      [prismaCli, 'db', 'push', '--accept-data-loss', '--skip-generate'],
+      { stdio: 'inherit', cwd: projectRoot },
+    );
+  } catch (err) {
+    // eslint-disable-next-line no-console
+    console.error('Prisma db push failed during startup:', err);
+  }
+}
+
 async function bootstrap() {
+  ensureDatabaseSchema();
+
   const publicDemoMode = (process.env.PUBLIC_DEMO_MODE ?? 'true').toLowerCase() === 'true';
   const allowedOrigins = (process.env.ALLOWED_ORIGIN || 'http://localhost:3000')
     .split(',')
