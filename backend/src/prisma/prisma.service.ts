@@ -12,9 +12,15 @@ import { PrismaLibSQL } from '@prisma/adapter-libsql';
 // is read here explicitly because driver adapters construct their own
 // connection rather than Prisma Client resolving datasource.url = env(...)
 // itself.
+//
+// On Vercel there's no persistent local disk shared across instances, so
+// DATABASE_URL points at a remote libSQL server (e.g. Turso, a
+// "libsql://...") instead of a local file — same adapter, same code, just a
+// different URL scheme, plus the auth token that scheme requires.
 function createAdapter(): PrismaLibSQL {
   const url = process.env.DATABASE_URL || 'file:./leads.db';
-  return new PrismaLibSQL({ url });
+  const authToken = process.env.TURSO_AUTH_TOKEN || undefined;
+  return new PrismaLibSQL({ url, authToken });
 }
 
 @Injectable()
